@@ -4,9 +4,11 @@ export async function GET() {
 
     console.log("stream.js> get()")
 
+    let events_listener: (counter: any) => void;
+
     const stream = new ReadableStream({
         start(controller) {
-            const events_listener = (counter) => {
+            events_listener = (counter) => {
                 console.log(`stream.ts> counter = ${counter}`)
                 const data = `data: ${JSON.stringify({ counter })}\r\n\r\n`;
                 controller.enqueue(data)
@@ -15,9 +17,9 @@ export async function GET() {
             Emitter.on('count', events_listener)
         },
         cancel() {
-            // remove all current listeners
+            // remove listener
             console.log("stream.ts> cancel()")
-            Emitter.removeAllListeners()
+            Emitter.removeListener('count', events_listener)
         }
     })
 
