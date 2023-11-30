@@ -1,0 +1,20 @@
+{
+  "name": "@example/basics",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "scripts": {
+    "dev": "astro dev",
+    "start": "astro dev",
+    "build": "astro build",
+    "preview": "node dist/server/entry.mjs",
+    "astro": "astro"
+  },
+  "dependencies": {
+    "@astrojs/node": "6.1.0",
+    "astro": "3.6.3"
+  },
+  "devDependencies": {
+    "@types/node": "^20.10.1"
+  }
+}

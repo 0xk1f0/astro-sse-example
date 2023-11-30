@@ -1,0 +1,33 @@
+---
+import Layout from '../layouts/Layout.astro';
+import { get_count } from './events';
+
+const current_count = get_count()
+---
+
+<Layout title="Welcome to Astro.">
+	<main>
+		<h1>Counter: <span class="text-gradient">{current_count}</span></h1>
+		<p>SSE: Server Sent Events using ReadableStream()</p>
+		<p>Events are coming from a separate file using a timer and Emitter</p>
+		<p>Note that reloading the page has no effect on server counter</p>
+	</main>
+</Layout>
+
+<script>
+	const evtSource = new EventSource("/api/stream")
+
+	evtSource.onmessage = (event) => {
+		const span = document.querySelector('.text-gradient')
+		const data = JSON.parse(event.data)
+		console.log(data.counter)
+		span.textContent = data.counter
+	}
+	evtSource.onerror = () => {
+		evtSource.close();
+	};
+	window.onbeforeunload = () => {
+		// close gracefully
+		evtSource.close();
+	}
+</script>
